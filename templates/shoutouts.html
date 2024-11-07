@@ -14,15 +14,15 @@
         <img src="static/gompei.png" alt="Gompei" style="width:75px; margin: 0px 40px;">
         <div class="nav-buttons">
             <a id="tech-checks-tab" href="/index">Tech Checks</a>
-            <p>|</p>
-            <a id="shoutouts-tab" href="/shoutout-page">Shoutouts</a>
+            <p style="display: inline-block;">|</p>
+            <a id="shoutouts-tab" href="/shoutouts">Shoutouts</a>
         </div>
     </div>
     <div class="container">
         <div class="post-box">
-            <input type="text" id="name" placeholder="Shoutout Name">
-            <input type="text" id="username" placeholder="Your Name">
-            <textarea id="message" rows="3" placeholder="What's your shoutout for?"></textarea>
+            <input type="text" id="recipient" placeholder="Who are you shouting out?">
+            <input type="text" id="giver" placeholder="Your name (optional)">
+            <textarea id="message" rows="3" placeholder="Give a little message why"></textarea>
             <button onclick="submitShout()">SHARE</button>
         </div>
         <div class="action-box" style="display: none;" >
@@ -30,12 +30,12 @@
             <!-- TODO LATER ONCE LIVE -->
             <!-- <button onclick="showPrevPosts()" id="old-posts-btn">&#x1F448 See Last Week's Tech Checks &#x1F440</button> -->
             <button onclick="showPostBox()" id="new-post-btn">Give another shoutout?</button>
-            <a href="/" id="shoutout-btn">Back to tech checks</a>
+            <button onclick="window.location.href = '/';" id="home-btn">Back to tech checks</button>
         </div>
     </div>
     <div class="container post-list-container">
         <div class="post-header">This Week's Shoutouts!!</div>
-        <div class="post-list" id="shoutout-list"></div>
+        <div class="post-list" id="post-list"></div>
     </div>
 
     <script>
@@ -48,47 +48,47 @@
 
         // Fetch and display posts
         async function loadShoutouts() {
-            const response = await fetch('/shoutouts');
-            const shouts = await response.json();
-            const shoutList = document.getElementById('shoutout-list');
-            shoutList.innerHTML = '';
+            const response = await fetch('/get_shoutouts');
+            const shoutouts = await response.json();
+            const postList = document.getElementById('post-list');
+            postList.innerHTML = '';
+            console.log(shoutouts.length);
 
-            if (shouts.length === 0) {
+            if (shoutouts.length === 0) {
                 // Display a message when there are no posts
-                shoutList.innerHTML = '<p style="color: #777; font-style: italic; text-align: center;">No shoutouts yet. Add the first one!</p>';
+                postList.innerHTML = '<p style="color: #777; font-style: italic; text-align: center;">No shoutouts yet. Add the first one!</p>';
             } else {
                 // Reverse the order of the posts (most recent on the top)
-                shouts.reverse().forEach(shout => {
-                    const shoutoutElement = document.createElement('div');
-                    shoutoutElement.classList.add('post');
-                    shoutoutElement.innerHTML = `
-                        <div class="name">${shout.name}</div>
-                        <div class="username">${shout.username}</div>
-                        <div class="timestamp">${formatTimestamp(shout.timestamp)}</div>
-                        <div class="message">${shout.message}</div>
+                shoutouts.reverse().forEach(post => {
+                    const postElement = document.createElement('div');
+                    postElement.classList.add('post');
+                    postElement.innerHTML = `
+                        <div class="username">${post.giver} ➔ ${post.recipient}</div>
+                        <div class="timestamp">${formatTimestamp(post.timestamp)}</div>
+                        <div class="message">${post.message}</div>
                     `;
-                    shoutList.appendChild(shoutoutElement);
+                    postList.appendChild(postElement);
                 });
             }
         }
 
         // Submit new post
         async function submitShout() {
-            const name = document.getElementById('name').value;
-            const username = document.getElementById('username').value;
+            const giver = document.getElementById('giver').value;
+            const recipient = document.getElementById('recipient').value;
             const message = document.getElementById('message').value;
-            if (!name || !message) {
-                alert("Please enter both a name to shoutout and a quick message for them");
+            if (!recipient || !message) {
+                alert("Please enter both a name to shoutout and a quick message for your shoutout");
                 return;
             }
             const response = await fetch('/shoutout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, username, message })
+                body: JSON.stringify({ giver, recipient, message })
             });
             if (response.ok) {
-                document.getElementById('name').value = '';
-                document.getElementById('username').value = '';
+                document.getElementById('giver').value = '';
+                document.getElementById('recipient').value = '';
                 document.getElementById('message').value = '';
                 document.querySelector('.post-box').style.display = 'none';
                 document.querySelector('.action-box').style.display = 'block'; // Show "Old posts" and New Posts buttons
@@ -107,8 +107,12 @@
             alert("Oops! This button doesn't actually work yet, shhh...");
         }
 
+        async function toHome() {
+            const response = await fetch('/');
+        }
+
         // Initial load
-        window.onload = loadPosts;
+        window.onload = loadShoutouts();
     </script>
 </body>
 </html>

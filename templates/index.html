@@ -17,8 +17,8 @@
         <img src="static/gompei.png" alt="Gompei" style="width:75px; margin: 0px 40px;">
         <div class="nav-buttons">
             <a id="tech-checks-tab" href="/index">Tech Checks</a>
-            <p>|</p>
-            <a id="shoutouts-tab" href="/shoutout-page">Shoutouts</a>
+            <p style="display: inline-block;">|</p>
+            <a id="shoutouts-tab" href="/shoutouts">Shoutouts</a>
         </div>
     </div>
     <div class="container">
@@ -31,7 +31,7 @@
             <div class="post-header" style="color:black;">Awesome! See your teammates tech checks below or click these!</div>
             <!-- TODO LATER ONCE LIVE -->
             <!-- <button onclick="showPrevPosts()" id="old-posts-btn">&#x1F448 See Last Week's Tech Checks &#x1F440</button> -->
-            <button onclick="showPostBox()" id="shoutout-btn">Give a shoutout?</button>
+            <button onclick="window.location.href = '/shoutouts';" id="shoutout-btn">Give a shoutout?</button>
             <button onclick="showPostBox()" id="new-post-btn">Another Tech Check?</button>
         </div>
     </div>

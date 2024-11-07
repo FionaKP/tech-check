@@ -9,16 +9,16 @@ app = Flask(__name__)
 POSTS_FILE = 'posts.json'
 SHOUTOUTS_FILE = 'shoutouts.json'
 
-# Helper function to load posts from a file
-def load_posts(filename=POSTS_FILE):
-    if os.path.exists(filename):
-        with open(filename, 'r') as f:
+# Helper function to load posts or shoutouts from a file
+def load_data(file_path):
+    if os.path.exists(file_path):
+        with open(file_path, 'r') as f:
             return json.load(f)
     return []
 
-# Helper function to save posts to a file
-def save_posts(data, filename=POSTS_FILE):
-    with open(filename, 'w') as f:
+# Helper function to save posts or shoutouts to a file
+def save_data(data, file_path):
+    with open(file_path, 'w') as f:
         json.dump(data, f, indent=4)
 
 @app.route("/")
@@ -32,46 +32,45 @@ def post_update():
     post = {
         "username": data['username'],
         "message": data['message'],
-        # "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M")
         "timestamp": datetime.now().isoformat()
     }
 
     # Load existing posts, append new post, and save posts
-    posts = load_posts(POSTS_FILE)
+    posts = load_data(POSTS_FILE)
     posts.append(post)
-    save_posts(posts, POSTS_FILE)
+    save_data(posts, POSTS_FILE)
 
     return jsonify({"status": "success", "post": post})
 
 @app.route('/posts', methods=['GET'])
 def get_posts():
-    posts = load_posts(POSTS_FILE)
+    posts = load_data(POSTS_FILE)
     return jsonify(posts)
 
-@app.route('/shoutout-page', methods=['GET'])
+@app.route('/shoutouts', methods=['GET'])
 def shoutouts():
     return render_template("shoutouts.html")
 
 @app.route('/shoutout', methods=['POST'])
-def shoutout_update():
+def post_shoutout():
     data = request.json
     shoutout = {
-        "name": data['name'],
-        "username": data['username'],
+        "giver": data['giver'],       # Name of the person giving the shoutout
+        "recipient": data['recipient'], # Name of the person receiving the shoutout
         "message": data['message'],
         "timestamp": datetime.now().isoformat()
     }
 
     # Load existing posts, append new post, and save posts
-    shoutouts = load_posts(SHOUTOUTS_FILE)
+    shoutouts = load_data(SHOUTOUTS_FILE)
     shoutouts.append(shoutout)
-    save_posts(shoutouts, SHOUTOUTS_FILE)
+    save_data(shoutouts, SHOUTOUTS_FILE)
 
     return jsonify({"status": "success", "post": shoutout})
 
-@app.route('/shoutouts', methods=['GET'])
+@app.route('/get_shoutouts', methods=['GET'])
 def get_shoutouts():
-    shoutouts = load_posts(SHOUTOUTS_FILE)
+    shoutouts = load_data(SHOUTOUTS_FILE)
     return jsonify(shoutouts)
 
 if __name__ == "__main__":
