@@ -8,9 +8,6 @@
     <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
-    <!-- <div class="wrap">
-        <img src="static/Tech_check.png">
-    </div> -->
     <div class="header">
         <img src="static/gompei.png" alt="Gompei" style="width:75px; margin: 0px 40px;">
         TWS Tech Check
@@ -23,21 +20,22 @@
     </div>
     <div class="container">
         <div class="post-box">
-            <input type="text" id="username" placeholder="Name">
-            <textarea id="message" rows="3" placeholder="What's your tech check for this week?"></textarea>
-            <button onclick="submitPost()">SHARE</button>
+            <input type="text" id="name" placeholder="Shoutout Name">
+            <input type="text" id="username" placeholder="Your Name">
+            <textarea id="message" rows="3" placeholder="What's your shoutout for?"></textarea>
+            <button onclick="submitShout()">SHARE</button>
         </div>
         <div class="action-box" style="display: none;" >
-            <div class="post-header" style="color:black;">Awesome! See your teammates tech checks below or click these!</div>
+            <div class="post-header" style="color:black;">Awesome! See your teammates shoutouts below or click these!</div>
             <!-- TODO LATER ONCE LIVE -->
             <!-- <button onclick="showPrevPosts()" id="old-posts-btn">&#x1F448 See Last Week's Tech Checks &#x1F440</button> -->
-            <button onclick="showPostBox()" id="shoutout-btn">Give a shoutout?</button>
-            <button onclick="showPostBox()" id="new-post-btn">Another Tech Check?</button>
+            <button onclick="showPostBox()" id="new-post-btn">Give another shoutout?</button>
+            <a href="/" id="shoutout-btn">Back to tech checks</a>
         </div>
     </div>
     <div class="container post-list-container">
-        <div class="post-header">Circle up, it’s tech check time</div>
-        <div class="post-list" id="post-list"></div>
+        <div class="post-header">This Week's Shoutouts!!</div>
+        <div class="post-list" id="shoutout-list"></div>
     </div>
 
     <script>
@@ -49,51 +47,54 @@
         }
 
         // Fetch and display posts
-        async function loadPosts() {
-            const response = await fetch('/posts');
-            const posts = await response.json();
-            const postList = document.getElementById('post-list');
-            postList.innerHTML = '';
+        async function loadShoutouts() {
+            const response = await fetch('/shoutouts');
+            const shouts = await response.json();
+            const shoutList = document.getElementById('shoutout-list');
+            shoutList.innerHTML = '';
 
-            if (posts.length === 0) {
+            if (shouts.length === 0) {
                 // Display a message when there are no posts
-                postList.innerHTML = '<p style="color: #777; font-style: italic; text-align: center;">There are no posts yet.</p>';
+                shoutList.innerHTML = '<p style="color: #777; font-style: italic; text-align: center;">No shoutouts yet. Add the first one!</p>';
             } else {
                 // Reverse the order of the posts (most recent on the top)
-                posts.reverse().forEach(post => {
-                    const postElement = document.createElement('div');
-                    postElement.classList.add('post');
-                    postElement.innerHTML = `
-                        <div class="username">${post.username}</div>
-                        <div class="timestamp">${formatTimestamp(post.timestamp)}</div>
-                        <div class="message">${post.message}</div>
+                shouts.reverse().forEach(shout => {
+                    const shoutoutElement = document.createElement('div');
+                    shoutoutElement.classList.add('post');
+                    shoutoutElement.innerHTML = `
+                        <div class="name">${shout.name}</div>
+                        <div class="username">${shout.username}</div>
+                        <div class="timestamp">${formatTimestamp(shout.timestamp)}</div>
+                        <div class="message">${shout.message}</div>
                     `;
-                    postList.appendChild(postElement);
+                    shoutList.appendChild(shoutoutElement);
                 });
             }
         }
 
         // Submit new post
-        async function submitPost() {
+        async function submitShout() {
+            const name = document.getElementById('name').value;
             const username = document.getElementById('username').value;
             const message = document.getElementById('message').value;
-            if (!username || !message) {
-                alert("Please enter both your name and a tech check!");
+            if (!name || !message) {
+                alert("Please enter both a name to shoutout and a quick message for them");
                 return;
             }
-            const response = await fetch('/post', {
+            const response = await fetch('/shoutout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, message })
+                body: JSON.stringify({ name, username, message })
             });
             if (response.ok) {
+                document.getElementById('name').value = '';
                 document.getElementById('username').value = '';
                 document.getElementById('message').value = '';
                 document.querySelector('.post-box').style.display = 'none';
                 document.querySelector('.action-box').style.display = 'block'; // Show "Old posts" and New Posts buttons
                 // document.getElementById('new-post-btn').style.display = 'block'; // Show "New Post" button
                 // document.getElementById('old-posts-btn').style.display = 'block'; // Show "New Post" button
-                loadPosts(); // Reload posts to include the new post
+                loadShoutouts(); // Reload posts to include the new post
             }
         }
 

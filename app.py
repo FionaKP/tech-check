@@ -7,20 +7,22 @@ app = Flask(__name__)
 
 # In-memory storage for simplicity
 POSTS_FILE = 'posts.json'
+SHOUTOUTS_FILE = 'shoutouts.json'
 
 # Helper function to load posts from a file
-def load_posts():
-    if os.path.exists(POSTS_FILE):
-        with open(POSTS_FILE, 'r') as f:
+def load_posts(filename=POSTS_FILE):
+    if os.path.exists(filename):
+        with open(filename, 'r') as f:
             return json.load(f)
     return []
 
 # Helper function to save posts to a file
-def save_posts(posts):
-    with open(POSTS_FILE, 'w') as f:
-        json.dump(posts, f, indent=4)
+def save_posts(data, filename=POSTS_FILE):
+    with open(filename, 'w') as f:
+        json.dump(data, f, indent=4)
 
 @app.route("/")
+@app.route("/index")
 def index():
     return render_template("index.html")
 
@@ -35,16 +37,42 @@ def post_update():
     }
 
     # Load existing posts, append new post, and save posts
-    posts = load_posts()
+    posts = load_posts(POSTS_FILE)
     posts.append(post)
-    save_posts(posts)
+    save_posts(posts, POSTS_FILE)
 
     return jsonify({"status": "success", "post": post})
 
 @app.route('/posts', methods=['GET'])
 def get_posts():
-    posts = load_posts()
+    posts = load_posts(POSTS_FILE)
     return jsonify(posts)
+
+@app.route('/shoutout-page', methods=['GET'])
+def shoutouts():
+    return render_template("shoutouts.html")
+
+@app.route('/shoutout', methods=['POST'])
+def shoutout_update():
+    data = request.json
+    shoutout = {
+        "name": data['name'],
+        "username": data['username'],
+        "message": data['message'],
+        "timestamp": datetime.now().isoformat()
+    }
+
+    # Load existing posts, append new post, and save posts
+    shoutouts = load_posts(SHOUTOUTS_FILE)
+    shoutouts.append(shoutout)
+    save_posts(shoutouts, SHOUTOUTS_FILE)
+
+    return jsonify({"status": "success", "post": shoutout})
+
+@app.route('/shoutouts', methods=['GET'])
+def get_shoutouts():
+    shoutouts = load_posts(SHOUTOUTS_FILE)
+    return jsonify(shoutouts)
 
 if __name__ == "__main__":
     app.run(debug=True)

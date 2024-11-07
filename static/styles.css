@@ -22,11 +22,41 @@ body {
     width: 100%;
     background-color: #d32f2f;
     color: #fff;
-    padding: 20px 0;
+    padding: 20px 0px 10px;
     text-align: center;
     font-size: 3em;
     font-weight: bold;
     letter-spacing: 1px;
+}
+
+.nav-buttons {
+    justify-content: center;
+    color: #fff;
+    font-size: 20px;
+    padding: 5px;
+}
+
+.nav-buttons p {
+    display: inline-block;
+}
+
+.nav-buttons a {
+    display: inline-block;
+    /* width: 100%; */
+    padding: 5px 12px 5px;
+    background-color: #d32f2f;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.nav-buttons a:hover {
+    color: #d32f2f;
+    background-color: #fff;
 }
 
 .container {
@@ -57,7 +87,8 @@ body {
     font-size: 1em;
 }
 
-.post-box button {
+.post-box button, 
+.post-box a {
     width: 100%;
     padding: 12px;
     background-color: #d32f2f;
@@ -84,7 +115,8 @@ body {
     transition: #d32f2f 0.3s ease;
 }
 
-.post-box button:hover {
+.post-box button:hover, 
+.post-box a:hover {
     background-color: #b71c1c;
 }
 
