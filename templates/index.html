@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Check</title>
+    <link rel="icon" type="image/png" href="static/gompei.png">
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+    <div class="wrap">
+        <img src="static/Tech_check.png">
+    </div>
+    <div class="header">
+        <img src="static/gompei.png" alt="Gompei" style="width:75px; margin: 0px 40px;">
+        TWS Tech Check
+        <img src="static/gompei.png" alt="Gompei" style="width:75px; margin: 0px 40px;">
+    </div>
+    <div class="container">
+        <div class="post-box">
+            <input type="text" id="username" placeholder="Name">
+            <textarea id="message" rows="3" placeholder="What's your tech check for this week?"></textarea>
+            <button onclick="submitPost()">SHARE</button>
+        </div>
+        <div class="action-box" style="display: none;" >
+            <div class="post-header" style="color:black;">Awesome! See your teammates tech checks below or click these!</div>
+            <button onclick="showPrevPosts()" id="old-posts-btn">&#x1F448 See Last Week's Tech Checks &#x1F440</button>
+            <button onclick="showPostBox()" id="new-post-btn">Another Tech Check? </button>
+        </div>
+    </div>
+    <div class="container post-list-container">
+        <div class="post-header">Circle up, it’s tech check time</div>
+        <div class="post-list" id="post-list"></div>
+    </div>
+
+    <script>
+        // Function to format the timestamp
+        function formatTimestamp(isoDate) {
+            const date = new Date(isoDate);
+            const options = { weekday: 'long', hour: 'numeric', minute: 'numeric', hour12: true };
+            return date.toLocaleDateString('en-US', options); // Format to "Monday, 03:45 PM"
+        }
+
+        // Fetch and display posts
+        async function loadPosts() {
+            const response = await fetch('/posts');
+            const posts = await response.json();
+            const postList = document.getElementById('post-list');
+            postList.innerHTML = '';
+
+            if (posts.length === 0) {
+                // Display a message when there are no posts
+                postList.innerHTML = '<p style="color: #777; font-style: italic; text-align: center;">There are no posts yet.</p>';
+            } else {
+                // Reverse the order of the posts (most recent on the top)
+                posts.reverse().forEach(post => {
+                    const postElement = document.createElement('div');
+                    postElement.classList.add('post');
+                    postElement.innerHTML = `
+                        <div class="username">${post.username}</div>
+                        <div class="timestamp">${formatTimestamp(post.timestamp)}</div>
+                        <div class="message">${post.message}</div>
+                    `;
+                    postList.appendChild(postElement);
+                });
+            }
+        }
+
+        // Submit new post
+        async function submitPost() {
+            const username = document.getElementById('username').value;
+            const message = document.getElementById('message').value;
+            if (!username || !message) {
+                alert("Please enter both your name and a tech check!");
+                return;
+            }
+            const response = await fetch('/post', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, message })
+            });
+            if (response.ok) {
+                document.getElementById('username').value = '';
+                document.getElementById('message').value = '';
+                document.querySelector('.post-box').style.display = 'none';
+                document.querySelector('.action-box').style.display = 'block'; // Show "Old posts" and New Posts buttons
+                // document.getElementById('new-post-btn').style.display = 'block'; // Show "New Post" button
+                // document.getElementById('old-posts-btn').style.display = 'block'; // Show "New Post" button
+                loadPosts(); // Reload posts to include the new post
+            }
+        }
+
+        function showPostBox() {
+            document.querySelector('.post-box').style.display = 'block';
+            document.querySelector('.action-box').style.display = 'none';
+        }
+
+        function showPrevPosts() {
+            alert("Oops! This button doesn't actually work yet, shhh...");
+        }
+
+        // Initial load
+        window.onload = loadPosts;
+    </script>
+</body>
+</html>
