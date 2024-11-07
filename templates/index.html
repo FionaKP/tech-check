@@ -64,8 +64,10 @@
                     const postElement = document.createElement('div');
                     postElement.classList.add('post');
                     postElement.innerHTML = `
-                        <div class="username">${post.username}</div>
-                        <div class="timestamp">${formatTimestamp(post.timestamp)}</div>
+                        <div class="post-content">
+                            <span class="username">${post.username}</span>
+                            <span class="info">${formatTimestamp(post.timestamp)}</span>
+                        </div>
                         <div class="message">${post.message}</div>
                     `;
                     postList.appendChild(postElement);
