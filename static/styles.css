@@ -151,10 +151,26 @@ body {
     transform: translateY(-2px);
 }
 
-.post .name {
+/* Style for the recipient's name in bold red */
+.recipient {
     font-weight: bold;
     color: #d32f2f;
+    float: left;
     font-size: 1.1em;
+}
+
+/* Style for the giver's name and timestamp on the right */
+.info {
+    float: right;
+    font-size: 0.9em;
+    color: #555;
+}
+
+/* Clear floats after the post header */
+.post-content::after {
+    content: "";
+    display: table;
+    clear: both;
 }
 
 .post .username {

@@ -61,12 +61,27 @@
                 // Reverse the order of the posts (most recent on the top)
                 shoutouts.reverse().forEach(post => {
                     const postElement = document.createElement('div');
-                    postElement.classList.add('post');
+                    postElement.classList.add('post'); // ➔ 
                     postElement.innerHTML = `
-                        <div class="username">${post.giver} ➔ ${post.recipient}</div>
-                        <div class="timestamp">${formatTimestamp(post.timestamp)}</div>
+                        <div class="post-content">
+                            <span class="recipient">${post.recipient}!</span>
+                            <span class="info">${post.giver} | ${formatTimestamp(post.timestamp)}</span>
+                        </div>
                         <div class="message">${post.message}</div>
                     `;
+                    // postElement.innerHTML = `
+                    //     <div class="username">${post.recipient}!</div>
+                    //     <div class="info">
+                    //         <div class="giver">${post.giver}</div>
+                    //         <div class="timestamp">${formatTimestamp(post.timestamp)}</div>
+                    //     </div>
+                    //     <div class="message">${post.message}</div>
+                    // `;
+                    // postElement.innerHTML = `
+                    //     <div class="username">${post.giver} ➔ ${post.recipient}!</div>
+                    //     <div class="timestamp">${formatTimestamp(post.timestamp)}</div>
+                    //     <div class="message">${post.message}</div>
+                    // `;
                     postList.appendChild(postElement);
                 });
             }
