@@ -47,6 +47,16 @@ def get_posts():
     posts = load_data(POSTS_FILE)
     return jsonify(posts)
 
+@app.route('/this_week_posts', methods=['GET'])
+def get_this_week_posts():
+    posts = load_data(POSTS_FILE)
+    one_week_ago = datetime.now() - timedelta(days=7)
+    recent_posts = [
+        post for post in posts
+        if datetime.fromisoformat(post["timestamp"]) > one_week_ago
+    ]
+    return jsonify(recent_posts)
+
 @app.route('/shoutouts', methods=['GET'])
 def shoutouts():
     return render_template("shoutouts.html")
@@ -72,6 +82,16 @@ def post_shoutout():
 def get_shoutouts():
     shoutouts = load_data(SHOUTOUTS_FILE)
     return jsonify(shoutouts)
+
+@app.route('get_this_week_shoutouts', methods=['GET'])
+def get_this_week_shoutouts():
+    shoutouts = load_data(SHOUTOUTS_FILE)
+    one_week_ago = datetime.now() - timedelta(days=7)
+    recent_shoutouts = [
+        shoutout for shoutout in shoutouts
+        if datetime.fromisoformat(shoutout["timestamp"]) > one_week_ago
+    ]
+    return jsonify(recent_shoutouts)
 
 if __name__ == "__main__":
     app.run(debug=True)
