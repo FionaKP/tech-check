@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech Check</title>
+    <title>Tech Check Archive</title>
     <link rel="icon" type="image/png" href="static/gompei.png">
     <link rel="stylesheet" href="static/styles.css">
 </head>
@@ -20,39 +20,25 @@
             <a id="shoutouts-tab" style="text-decoration:none;" href="/shoutouts">Shoutouts</a>
         </div>
     </div>
-    <div class="container">
-        <div class="post-box">
-            <input type="text" id="username" placeholder="Name">
-            <textarea id="message" rows="3" placeholder="What's your tech check for this week?"></textarea>
-            <button onclick="submitPost()">SHARE</button>
-        </div>
-        <div class="action-box" style="display: none;" >
-            <div class="post-header" style="color:black;">Awesome! See your teammates tech checks below or click these!</div>
-            <button onclick="window.location.href = '/shoutouts';" id="shoutout-btn">Give a shoutout?</button>
-            <button onclick="showPostBox()" id="new-post-btn">Another Tech Check?</button>
-            <button onclick="window.location.href = '/post_archive'" id="old-posts-btn">&#x1F448 View All Old Tech Checks &#x1F440</button>
-        </div>
-    </div>
     <div class="container post-list-container">
-        <div class="post-header">Circle up, it’s tech check time</div>
-        <div class="post-list" id="post-list"></div>
+        <div class="post-header">All TWS Tech Checks!</div>
         <div class="archive">
-            <a class="old-posts" href="/post_archive">View Old Tech Checks</a>
+            <a class="old-posts" href="/index">Back to current week</a>
         </div>
-        <!-- <button onclick="window.location.href = '/post_archive'" style="color: d32f2f; border: none; background-color: #fff;" id="old-posts-btn"> View More Tech Checks?</button> -->
+        <div class="post-list" id="post-list"></div>
     </div>
 
     <script>
         // Function to format the timestamp
         function formatTimestamp(isoDate) {
             const date = new Date(isoDate);
-            const options = { weekday: 'long', hour: 'numeric', minute: 'numeric', hour12: true };
-            return date.toLocaleDateString('en-US', options); // Format to "Monday, 03:45 PM"
+            const options = { month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options); // Format to "December 1"
         }
 
         // Fetch and display posts
         async function loadPosts() {
-            const response = await fetch('/this_week_posts');
+            const response = await fetch('/posts');
             const posts = await response.json();
             const postList = document.getElementById('post-list');
             postList.innerHTML = '';
@@ -74,28 +60,6 @@
                     `;
                     postList.appendChild(postElement);
                 });
-            }
-        }
-
-        // Submit new post
-        async function submitPost() {
-            const username = document.getElementById('username').value;
-            const message = document.getElementById('message').value;
-            if (!username || !message) {
-                alert("Please enter both your name and a tech check!");
-                return;
-            }
-            const response = await fetch('/post', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, message })
-            });
-            if (response.ok) {
-                document.getElementById('username').value = '';
-                document.getElementById('message').value = '';
-                document.querySelector('.post-box').style.display = 'none';
-                document.querySelector('.action-box').style.display = 'block'; // Show "Old posts" and New Posts buttons
-                loadPosts(); // Reload posts to include the new post
             }
         }
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech Check</title>
+    <title>Tech Check Archive</title>
     <link rel="icon" type="image/png" href="static/gompei.png">
     <link rel="stylesheet" href="static/styles.css">
 </head>
@@ -20,39 +20,25 @@
             <a id="shoutouts-tab" href="/shoutouts">Shoutouts</a>
         </div>
     </div>
-    <div class="container">
-        <div class="post-box">
-            <input type="text" id="recipient" placeholder="Who are you shouting out?">
-            <input type="text" id="giver" placeholder="Your name (optional)">
-            <textarea id="message" rows="3" placeholder="Give a little message why"></textarea>
-            <button onclick="submitShout()">SHARE</button>
-        </div>
-        <div class="action-box" style="display: none;" >
-            <div class="post-header" style="color:black;">Awesome! See your teammates shoutouts below or click these!</div>
-            <button onclick="showPostBox()" id="new-post-btn">Give another shoutout?</button>
-            <button onclick="window.location.href = '/';" id="home-btn">Back to tech checks</button>
-            <button onclick="window.location.href = '/shoutout_archive'" id="old-posts-btn">&#x1F448 View All Old Shoutouts &#x1F440</button>
-        </div>
-    </div>
     <div class="container post-list-container">
         <div class="post-header">This Week's Shoutouts!!</div>
-        <div class="post-list" id="post-list"></div>
         <div class="archive">
-            <a class="old-posts" href="/shoutout_archive">View Old Tech Shoutouts</a>
+            <a class="old-posts" href="/shoutouts">Back to current week</a>
         </div>
+        <div class="post-list" id="post-list"></div>
     </div>
 
     <script>
         // Function to format the timestamp
         function formatTimestamp(isoDate) {
             const date = new Date(isoDate);
-            const options = { weekday: 'long', hour: 'numeric', minute: 'numeric', hour12: true };
-            return date.toLocaleDateString('en-US', options); // Format to "Monday, 03:45 PM"
+            const options = { month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options); // Format to "December 1"
         }
 
         // Fetch and display posts
         async function loadShoutouts() {
-            const response = await fetch('/get_this_week_shoutouts');
+            const response = await fetch('/get_shoutouts');
             const shoutouts = await response.json();
             const postList = document.getElementById('post-list');
             postList.innerHTML = '';

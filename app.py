@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 import os
 
@@ -25,6 +25,10 @@ def save_data(data, file_path):
 @app.route("/index")
 def index():
     return render_template("index.html")
+
+@app.route("/post_archive", methods=['GET'])
+def post_archive():
+    return render_template("post_archive.html")
 
 @app.route('/post', methods=['POST'])
 def post_update():
@@ -61,6 +65,10 @@ def get_this_week_posts():
 def shoutouts():
     return render_template("shoutouts.html")
 
+@app.route('/shoutout_archive', methods=['GET'])
+def shoutout_archive():
+    return render_template("shoutout_archive.html")
+
 @app.route('/shoutout', methods=['POST'])
 def post_shoutout():
     data = request.json
@@ -83,7 +91,7 @@ def get_shoutouts():
     shoutouts = load_data(SHOUTOUTS_FILE)
     return jsonify(shoutouts)
 
-@app.route('get_this_week_shoutouts', methods=['GET'])
+@app.route('/get_this_week_shoutouts', methods=['GET'])
 def get_this_week_shoutouts():
     shoutouts = load_data(SHOUTOUTS_FILE)
     one_week_ago = datetime.now() - timedelta(days=7)
