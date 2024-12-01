@@ -19,6 +19,12 @@ A tech check is something you share with the team that is a good thing that happ
 - **Frontend**: HTML, CSS, JavaScript
 - **Data Storage**: JSON file for persistent storage
 
+## Visit the site live on Python anywhere 
+
+Go to the following URL to see the site hosted on my free pythonanywhere account!!
+
+https://fkprendergast.pythonanywhere.com/ 
+
 ## Setup and Installation
 
 Follow these steps to set up and run the Tech Check site locally.
