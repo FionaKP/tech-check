@@ -80,21 +80,7 @@
                             <span class="info">${formatTimestamp(post.timestamp)}</span>
                         </div>
                         <div class="message">${post.message}</div>
-                        <div class="replies">
-                            <h5>Replies:</h5>
-                            <ul>
-                                ${post.replies.map(reply => `
-                                    <li>
-                                        <strong>${reply.username}</strong>: ${reply.message} 
-                                        <span class="info">${formatTimestamp(reply.timestamp)}</span>
-                                    </li>
-                                `).join('')}
-                            </ul>
-                        </div>
-                        <div class="reply-box">
-                            <input type="text" placeholder="Reply..." class="reply-input">
-                            <button onclick="submitReply(${post.id})">Reply</button>
-                        </div>
+                        <button onclick="showReplies(${post.id})">View Replies</button>
                     `;
                     postList.appendChild(postElement);
                 });
@@ -146,6 +132,63 @@
             } else {
                 alert("Failed to submit reply.");
             }
+        }
+
+        async function showReplies(postId) {
+            const response = await fetch('/posts');
+            const posts = await response.json();
+            const post = posts.find(p => p.id === postId);
+
+            if (!post) {
+                alert("Post not found");
+                return;
+            }
+
+            const repliesContainer = document.getElementById('replies');
+            repliesContainer.innerHTML = `
+                <h4>Replies for: ${post.message}</h4>
+                <ul>
+                    ${post.replies.map(reply => `
+                        <li>
+                            <strong>${reply.username}</strong>: ${reply.message}
+                            <span class="info">${formatTimestamp(reply.timestamp)}</span>
+                        </li>
+                    `).join('')}
+                </ul>
+            `;
+
+            document.getElementById('reply-container').style.display = 'block';
+
+            // Add event listener for replying
+            const replyInput = document.getElementById('reply-input');
+            const replyButton = document.getElementById('reply-button');
+            replyButton.onclick = async () => {
+                const message = replyInput.value.trim();
+                if (!message) {
+                    alert("Reply cannot be empty!");
+                    return;
+                }
+
+                const replyResponse = await fetch(`/reply/${postId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: "YourUsername", // Replace with dynamic username if needed
+                        message
+                    })
+                });
+
+                if (replyResponse.ok) {
+                    replyInput.value = '';
+                    showReplies(postId); // Reload replies
+                } else {
+                    alert("Failed to submit reply.");
+                }
+            };
+        }
+
+        function closeReplies() {
+            document.getElementById('reply-container').style.display = 'none';
         }
 
         function showPostBox() {
