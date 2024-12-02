@@ -41,6 +41,15 @@
         </div>
         <!-- <button onclick="window.location.href = '/post_archive'" style="color: d32f2f; border: none; background-color: #fff;" id="old-posts-btn"> View More Tech Checks?</button> -->
     </div>
+    <div class="container reply-container" id="reply-container" style="display: none;">
+        <button onclick="closeReplies()">Close</button>
+        <div class="reply-header">Replies</div>
+        <div id="replies"></div>
+        <div class="reply-box">
+            <input type="text" placeholder="Reply..." id="reply-input">
+            <button id="reply-button">Reply</button>
+        </div>
+    </div>
 
     <script>
         // Function to format the timestamp
@@ -71,6 +80,21 @@
                             <span class="info">${formatTimestamp(post.timestamp)}</span>
                         </div>
                         <div class="message">${post.message}</div>
+                        <div class="replies">
+                            <h5>Replies:</h5>
+                            <ul>
+                                ${post.replies.map(reply => `
+                                    <li>
+                                        <strong>${reply.username}</strong>: ${reply.message} 
+                                        <span class="info">${formatTimestamp(reply.timestamp)}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                        <div class="reply-box">
+                            <input type="text" placeholder="Reply..." class="reply-input">
+                            <button onclick="submitReply(${post.id})">Reply</button>
+                        </div>
                     `;
                     postList.appendChild(postElement);
                 });
@@ -98,14 +122,35 @@
                 loadPosts(); // Reload posts to include the new post
             }
         }
+        
+        async function submitReply(postId) {
+            const replyInput = document.querySelector(`.reply-box input`);
+            const message = replyInput.value.trim();
+            if (!message) {
+                alert("Reply cannot be empty!");
+                return;
+            }
+
+            const response = await fetch(`/reply/${postId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    username: "YourUsername", // Replace or dynamically fetch the username
+                    message 
+                })
+            });
+
+            if (response.ok) {
+                replyInput.value = ''; // Clear the input
+                loadPosts(); // Reload posts to show the new reply
+            } else {
+                alert("Failed to submit reply.");
+            }
+        }
 
         function showPostBox() {
             document.querySelector('.post-box').style.display = 'block';
             document.querySelector('.action-box').style.display = 'none';
-        }
-
-        function showPrevPosts() {
-            alert("Oops! This button doesn't actually work yet, shhh...");
         }
 
         // Initial load

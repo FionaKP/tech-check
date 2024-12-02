@@ -222,6 +222,40 @@ body {
     color: #b71c1c;
 }
 
+.reply-container {
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 30%;
+    background: #f9f9f9;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.reply-header {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.reply-box {
+    margin-top: 20px;
+}
+
+.reply-box input {
+    width: calc(100% - 100px);
+    padding: 10px;
+    margin-right: 10px;
+}
+
+.reply-box button {
+    padding: 10px 20px;
+}
+
+
 /* Responsive design */
 @media only screen and (max-width: 1000px) {
     .container {

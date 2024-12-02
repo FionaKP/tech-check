@@ -1,47 +1,78 @@
 [
     {
+        "id": 2,
         "username": "Fiona",
         "message": "I'm making a website for tech checks and shoutouts!!",
-        "timestamp": "2024-11-07T13:44:33.847592"
+        "timestamp": "2024-11-07T13:44:33.847592+00:00",
+        "replies": []
     },
     {
+        "id": 3,
         "username": "Jess English",
         "message": "WE ARE GOING TO THE FINALSSSSS",
-        "timestamp": "2024-11-08T12:22:47.532477"
+        "timestamp": "2024-11-08T12:22:47.532477+00:00",
+        "replies": []
     },
     {
+        "id": 4,
         "username": "Fiona",
         "message": "I made this web app public and available on python anywhere!",
-        "timestamp": "2024-12-01T16:35:58.485265"
+        "timestamp": "2024-12-01T16:35:58.485265+00:00",
+        "replies": []
     },
     {
+        "id": 5,
         "username": "Fi",
         "message": "test test",
-        "timestamp": "2024-12-01T16:41:18.486076"
+        "timestamp": "2024-12-01T16:41:18.486076+00:00",
+        "replies": []
     },
     {
+        "id": 6,
         "username": "Fiona",
         "message": "testing 2",
-        "timestamp": "2024-12-01T17:30:29.319561"
+        "timestamp": "2024-12-01T17:30:29.319561+00:00",
+        "replies": []
     },
     {
+        "id": 7,
         "username": "test",
         "message": "TEST",
-        "timestamp": "2024-12-01T22:51:13.256260"
+        "timestamp": "2024-12-01T22:51:13.256260+00:00",
+        "replies": []
     },
     {
+        "id": 8,
         "username": "FI",
         "message": "hi",
-        "timestamp": "2024-12-01T22:51:24.879804"
+        "timestamp": "2024-12-01T22:51:24.879804+00:00",
+        "replies": []
     },
     {
+        "id": 8,
         "username": "rawr",
         "message": "rawr",
-        "timestamp": "2024-12-01T17:59:16.492333"
+        "timestamp": "2024-12-01T17:59:16.492333+00:00",
+        "replies": []
     },
     {
+        "id": 9,
         "username": "bay",
         "message": "her face hurts :(",
-        "timestamp": "2024-12-01T21:37:25.340373"
+        "timestamp": "2024-12-01T21:37:25.340373+00:00",
+        "replies": []
+    },
+    {
+        "id": 10,
+        "username": "Fi",
+        "message": "testing replies!",
+        "timestamp": "2024-12-02T03:55:24.037969+00:00",
+        "replies": [
+            {
+                "username": "YourUsername",
+                "message": "Hi there!",
+                "timestamp": "2024-12-02T03:57:28.285609+00:00"
+            }
+        ]
     }
 ]

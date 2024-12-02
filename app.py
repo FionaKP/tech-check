@@ -34,9 +34,11 @@ def post_archive():
 def post_update():
     data = request.json
     post = {
+        "id": len(load_data(POSTS_FILE)) + 1,  # Unique ID for the post
         "username": data['username'],
         "message": data['message'],
-        "timestamp": datetime.now().isoformat()
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "replies": []  # Initialize with an empty list for replies
     }
 
     # Load existing posts, append new post, and save posts
@@ -46,6 +48,28 @@ def post_update():
 
     return jsonify({"status": "success", "post": post})
 
+@app.route('/reply/<int:post_id>', methods=['POST'])
+def add_reply(post_id):
+    data = request.json
+    reply = {
+        "username": data['username'],
+        "message": data['message'],
+        "timestamp": datetime.now(timezone.utc).isoformat()
+    }
+
+    posts = load_data(POSTS_FILE)
+
+    # Find the post by ID and add the reply
+    for post in posts:
+        if post["id"] == post_id:
+            post["replies"].append(reply)
+            break
+    else:
+        return jsonify({"status": "error", "message": "Post not found"}), 404
+
+    save_data(posts, POSTS_FILE)
+    return jsonify({"status": "success", "reply": reply})
+
 @app.route('/posts', methods=['GET'])
 def get_posts():
     posts = load_data(POSTS_FILE)
@@ -54,7 +78,7 @@ def get_posts():
 @app.route('/this_week_posts', methods=['GET'])
 def get_this_week_posts():
     posts = load_data(POSTS_FILE)
-    one_week_ago = datetime.now() - timedelta(days=7)
+    one_week_ago = datetime.now(timezone.utc) - timedelta(days=7)
     recent_posts = [
         post for post in posts
         if datetime.fromisoformat(post["timestamp"]) > one_week_ago
@@ -76,7 +100,7 @@ def post_shoutout():
         "giver": data['giver'],       # Name of the person giving the shoutout
         "recipient": data['recipient'], # Name of the person receiving the shoutout
         "message": data['message'],
-        "timestamp": datetime.now().isoformat()
+        "timestamp": datetime.now(timezone.utc).isoformat()
     }
 
     # Load existing posts, append new post, and save posts
