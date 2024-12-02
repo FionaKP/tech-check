@@ -118,7 +118,7 @@ def get_shoutouts():
 @app.route('/get_this_week_shoutouts', methods=['GET'])
 def get_this_week_shoutouts():
     shoutouts = load_data(SHOUTOUTS_FILE)
-    one_week_ago = datetime.now() - timedelta(days=7)
+    one_week_ago = datetime.now(timezone.utc) - timedelta(days=7)
     recent_shoutouts = [
         shoutout for shoutout in shoutouts
         if datetime.fromisoformat(shoutout["timestamp"]) > one_week_ago

@@ -222,6 +222,18 @@ body {
     color: #b71c1c;
 }
 
+/* Background overlay */
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Darken the background */
+    backdrop-filter: blur(5px); /* Optional: Add blur effect */
+    z-index: 999; /* Ensure it sits behind the popup but above the rest of the page */
+}
+
 /* Popup container styling */
 .reply-container {
     position: fixed;

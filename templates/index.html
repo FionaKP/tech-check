@@ -41,6 +41,7 @@
         </div>
         <!-- <button onclick="window.location.href = '/post_archive'" style="color: d32f2f; border: none; background-color: #fff;" id="old-posts-btn"> View More Tech Checks?</button> -->
     </div>
+    <div class="background-overlay" id="background-overlay" style="display: none;"></div>
     <div class="container reply-container" id="reply-container" style="display: none;">
         <div class="close-btn-container">
             <button class="close-btn" onclick="closeReplies()">Close</button>
@@ -59,7 +60,7 @@
         // Function to format the timestamp
         function formatTimestamp(isoDate) {
             const date = new Date(isoDate);
-            const options = { weekday: 'long', hour: 'numeric', minute: 'numeric', hour12: true, timeZoneName: 'short' }; // Specify Eastern US time zone
+            const options = { weekday: 'long', hour: 'numeric', minute: 'numeric', hour12: true }; 
             return date.toLocaleDateString('en-US', options); // Format to "Monday, 03:45 PM"
         }
 
@@ -216,9 +217,19 @@
                     alert("Failed to submit reply.");
                 }
             };
+
+            // Show the background overlay
+            document.getElementById('background-overlay').style.display = 'block';
+
+            // Show the reply popup
+            document.getElementById('reply-container').style.display = 'block';
         }
 
         function closeReplies() {
+            // Hide the background overlay
+            document.getElementById('background-overlay').style.display = 'none';
+
+            // Hide the reply popup
             document.getElementById('reply-container').style.display = 'none';
         }
 
