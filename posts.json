@@ -77,6 +77,57 @@
                 "username": "YourUsername",
                 "message": "Woah, this is almost there...",
                 "timestamp": "2024-12-02T04:27:12.132200+00:00"
+            },
+            {
+                "username": "YourUsername",
+                "message": "Good luck man.",
+                "timestamp": "2024-12-02T04:42:05.728973+00:00"
+            }
+        ]
+    },
+    {
+        "id": 11,
+        "username": "Fiona",
+        "message": "Tech check, reply testing, its going supa bueno",
+        "timestamp": "2024-12-02T04:41:47.196168+00:00",
+        "replies": [
+            {
+                "username": "test 2",
+                "message": "YAY!",
+                "timestamp": "2024-12-02T04:45:33.483458+00:00"
+            }
+        ]
+    },
+    {
+        "id": 12,
+        "username": "Fiona",
+        "message": "testtttttt",
+        "timestamp": "2024-12-02T04:42:27.939003+00:00",
+        "replies": [
+            {
+                "username": "Fiona",
+                "message": "WHOOP WHOOP",
+                "timestamp": "2024-12-02T04:42:35.791630+00:00"
+            },
+            {
+                "username": "Fiona",
+                "message": "hey there yay",
+                "timestamp": "2024-12-02T04:42:58.969310+00:00"
+            },
+            {
+                "username": "Fiona",
+                "message": "Relpy",
+                "timestamp": "2024-12-02T04:43:16.420028+00:00"
+            },
+            {
+                "username": "Anon",
+                "message": "hi",
+                "timestamp": "2024-12-02T04:44:33.319216+00:00"
+            },
+            {
+                "username": "Anon",
+                "message": "hi",
+                "timestamp": "2024-12-02T04:45:10.411327+00:00"
             }
         ]
     }

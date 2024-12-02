@@ -42,7 +42,9 @@
         <!-- <button onclick="window.location.href = '/post_archive'" style="color: d32f2f; border: none; background-color: #fff;" id="old-posts-btn"> View More Tech Checks?</button> -->
     </div>
     <div class="container reply-container" id="reply-container" style="display: none;">
-        <button class="close-btn" onclick="closeReplies()">Close</button>
+        <div class="close-btn-container">
+            <button class="close-btn" onclick="closeReplies()">Close</button>
+        </div>
         <div id="original-post" class="post"></div>
         <div class="reply-section">
             <div class="reply-list" id="replies"></div>
@@ -102,6 +104,8 @@
                 alert("Please enter both your name and a tech check!");
                 return;
             }
+            // Save username to local storage
+            localStorage.setItem('username', username);
             const response = await fetch('/post', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -164,7 +168,7 @@
             // Populate replies
             const repliesContainer = document.getElementById('replies');
             repliesContainer.innerHTML = post.replies.map(reply => `
-                <div class="post">
+                <div class="reply">
                     <div class="post-content">
                         <span class="username">${reply.username}</span>
                         <span class="info">${formatTimestamp(reply.timestamp)}</span>
@@ -177,6 +181,7 @@
             document.getElementById('reply-container').style.display = 'block';
 
             // Add reply submission functionality
+            const storedUsername = localStorage.getItem('username') || '';
             const replyInput = document.getElementById('reply-input');
             const replyButton = document.getElementById('reply-button');
             replyButton.onclick = async () => {
@@ -186,11 +191,20 @@
                     return;
                 }
 
+                const username = storedUsername || prompt("Wait! You need a name to send a reply:");
+                if (!username) {
+                    alert("You must provide a name to reply.");
+                    return;
+                }
+
+                // Save the username to local storage for future use
+                localStorage.setItem('username', username);
+
                 const replyResponse = await fetch(`/reply/${postId}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        username: "YourUsername", // Replace with dynamic username if needed
+                        username,
                         message
                     })
                 });
