@@ -82,7 +82,9 @@
                         <div class="message">${post.message}</div>
                         <div class="post-actions">
                             <span class="reply-count">${post.replies.length} replies</span>
-                            <button class="view-replies-btn" onclick="showReplies(${post.id})">View Replies</button>
+                            <button class="view-replies-btn" onclick="showReplies(${post.id})">
+                                <img src="static/comment.svg" alt="View Replies" class="reply-icon">
+                            </button>
                         </div>
                     `;
                     postList.appendChild(postElement);

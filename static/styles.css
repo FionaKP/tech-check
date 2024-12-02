@@ -269,24 +269,31 @@ body {
 }
 
 .view-replies-btn {
-    background-color: #4CAF50; /* Match site theme color */
-    color: white;
+    background: none; /* Remove default button styling */
     border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
+    padding: 0;
     cursor: pointer;
-    font-size: 0.9em;
-    transition: background-color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
 }
 
 .view-replies-btn:hover {
-    background-color: #45a049; /* Slightly darker green on hover */
+    transform: scale(1.1); /* Slightly enlarge on hover */
 }
 
 .view-replies-btn:active {
-    background-color: #3e8e41; /* Even darker green on click */
+    transform: scale(0.95); /* Shrink slightly on click */
 }
 
+.reply-icon {
+    width: 34px; /* Desired width */
+    height: 30px; /* Adjusted height for visible portion (about two-thirds) */
+    object-fit: cover; /* Ensures the image fits within the visible area */
+    object-position: top; /* Aligns the visible area to the top of the image */
+    overflow: hidden; /* Ensures only the specified portion is visible */
+}
 
 
 /* Responsive design */
