@@ -80,7 +80,10 @@
                             <span class="info">${formatTimestamp(post.timestamp)}</span>
                         </div>
                         <div class="message">${post.message}</div>
-                        <button onclick="showReplies(${post.id})">View Replies</button>
+                        <div class="post-actions">
+                            <span class="reply-count">${post.replies.length} replies</span>
+                            <button class="view-replies-btn" onclick="showReplies(${post.id})">View Replies</button>
+                        </div>
                     `;
                     postList.appendChild(postElement);
                 });

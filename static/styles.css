@@ -255,6 +255,39 @@ body {
     padding: 10px 20px;
 }
 
+/* Styling for the replies section in the post box */
+.post-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.reply-count {
+    font-size: 0.9em;
+    color: #555;
+}
+
+.view-replies-btn {
+    background-color: #4CAF50; /* Match site theme color */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
+
+.view-replies-btn:hover {
+    background-color: #45a049; /* Slightly darker green on hover */
+}
+
+.view-replies-btn:active {
+    background-color: #3e8e41; /* Even darker green on click */
+}
+
+
 
 /* Responsive design */
 @media only screen and (max-width: 1000px) {
