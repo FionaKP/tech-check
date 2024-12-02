@@ -46,7 +46,7 @@
         // Function to format the timestamp
         function formatTimestamp(isoDate) {
             const date = new Date(isoDate);
-            const options = { weekday: 'long', hour: 'numeric', minute: 'numeric', hour12: true };
+            const options = { weekday: 'long', hour: 'numeric', minute: 'numeric', hour12: true, timeZoneName: 'short' }; // Specify Eastern US time zone
             return date.toLocaleDateString('en-US', options); // Format to "Monday, 03:45 PM"
         }
 
